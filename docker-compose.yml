@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  audiobook-organizer:
+    build: .
+    ports:
+      - "9977:9977"
+    volumes:
+      - /mnt/user/Books:/mnt/user/Books
+      - /mnt/user/Downloads/completed:/mnt/user/Downloads/completed
+    environment:
+      - TZ=America/New_York
+EOF
