@@ -1,3 +1,4 @@
+cat << 'EOF' > Dockerfile
 # Use an official Ubuntu runtime as a parent image
 FROM ubuntu:20.04
 
