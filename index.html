@@ -46,33 +46,5 @@
     {% endfor %}
     <br>
     <a href="{{ url_for('download_csv') }}">Download Unidentifiable Files CSV</a>
-    <h2>Unidentified Books</h2>
-    <ul>
-    {% for book in unidentified_books %}
-        <li>
-            <form action="{{ url_for('search_metadata') }}" method="post">
-                <input type="hidden" name="file_path" value="{{ book }}">
-                <label for="sources">Select Metadata Sources:</label>
-                <select name="sources" multiple>
-                    <option value="google">Google Books</option>
-                    <option value="beets">Beets</option>
-                </select>
-                <button type="submit">Search Metadata</button>
-            </form>
-            <form action="{{ url_for('update_book_info') }}" method="post">
-                <input type="hidden" name="file_path" value="{{ book }}">
-                <label for="title">Title:</label>
-                <input type="text" name="title" required>
-                <label for="author">Author:</label>
-                <input type="text" name="author">
-                <label for="isbn">ISBN:</label>
-                <input type="text" name="isbn">
-                <label for="amazon_id">Amazon ID:</label>
-                <input type="text" name="amazon_id">
-                <button type="submit">Update</button>
-            </form>
-        </li>
-    {% endfor %}
-    </ul>
 </body>
 </html>
