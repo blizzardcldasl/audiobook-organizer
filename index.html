@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audiobook Organizer</title>
+    <script>
+        function updateProgress() {
+            fetch('/progress')
+                .then(response => response.json())
+                .then(data => {
+                    for (const [process_id, progress] of Object.entries(data.progress_dict)) {
+                        const total = 100;  // Replace with actual total files if known
+                        const percentage = total > 0 ? (progress / total) * 100 : 0;
+                        document.getElementById(`progress-bar-${process_id}`).style.width = percentage + '%';
+                        document.getElementById(`progress-text-${process_id}`).innerText = `${progress} / ${total}`;
+                        document.getElementById(`folder-text-${process_id}`).innerText = data.folder_dict[process_id];
+                    }
+                    setTimeout(updateProgress, 1000);
+                });
+        }
+        updateProgress();
+    </script>
+</head>
+<body>
+    <h1>Audiobook Organizer</h1>
+    <form action="{{ url_for('start_organizing') }}" method="post">
+        <button type="submit">Start Organizing Audiobooks</button>
+    </form>
+    <form action="{{ url_for('pause') }}" method="post">
+        <button type="submit">Pause</button>
+    </form>
+    <form action="{{ url_for('resume') }}" method="post">
+        <button type="submit">Resume</button>
+    </form>
+    <br>
+    {% for process_id in progress_dict.keys() %}
+        <div>
+            <h2>Process {{ process_id }}</h2>
+            <div style="border: 1px solid #000; width: 100%; height: 30px;">
+                <div id="progress-bar-{{ process_id }}" style="background: #4caf50; height: 100%; width: 0%;"></div>
+            </div>
+            <p id="progress-text-{{ process_id }}">0 / 0</p>
+            <p id="folder-text-{{ process_id }}"></p>
+        </div>
+    {% endfor %}
+    <br>
+    <a href="{{ url_for('download_csv') }}">Download Unidentifiable Files CSV</a>
+    <h2>Unidentified Books</h2>
+    <ul>
+    {% for book in unidentified_books %}
+        <li>
+            <form action="{{ url_for('search_metadata') }}" method="post">
+                <input type="hidden" name="file_path" value="{{ book }}">
+                <label for="sources">Select Metadata Sources:</label>
+                <select name="sources" multiple>
+                    <option value="google">Google Books</option>
+                    <option value="beets">Beets</option>
+                </select>
+                <button type="submit">Search Metadata</button>
+            </form>
+            <form action="{{ url_for('update_book_info') }}" method="post">
+                <input type="hidden" name="file_path" value="{{ book }}">
+                <label for="title">Title:</label>
+                <input type="text" name="title" required>
+                <label for="author">Author:</label>
+                <input type="text" name="author">
+                <label for="isbn">ISBN:</label>
+                <input type="text" name="isbn">
+                <label for="amazon_id">Amazon ID:</label>
+                <input type="text" name="amazon_id">
+                <button type="submit">Update</button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
