@@ -1,3 +1,4 @@
+cat << 'EOF' > requirements.txt
 Flask==2.0.1
 Werkzeug==2.0.1
 mutagen==1.45.1
