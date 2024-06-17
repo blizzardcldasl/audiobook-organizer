@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metadata Selection</title>
+</head>
+<body>
+    <h1>Select Metadata to Apply</h1>
+    <form action="{{ url_for('apply_metadata') }}" method="post">
+        <input type="hidden" name="file_path" value="{{ file_path }}">
+        <input type="hidden" name="metadata" value="{{ metadata | tojson }}">
+        {% for source, data in metadata.items() %}
+            <div>
+                <h2>{{ source | capitalize }} Metadata</h2>
+                <p>Title: {{ data.title }}</p>
+                <p>Artist: {{ data.artist }}</p>
+                <p>Album: {{ data.album }}</p>
+                <button type="submit" name="source" value="{{ source }}">Apply This Metadata</button>
+            </div>
+        {% endfor %}
+    </form>
+</body>
+</html>
