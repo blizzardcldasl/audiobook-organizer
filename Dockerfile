@@ -1,4 +1,3 @@
-cat << 'EOF' > Dockerfile
 # Use an official Ubuntu runtime as a parent image
 FROM ubuntu:20.04
 
@@ -36,4 +35,3 @@ EXPOSE 9977
 
 # Run app.py when the container launches
 CMD ["python3", "app.py"]
-EOF
