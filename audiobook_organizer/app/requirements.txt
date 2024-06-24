@@ -1,3 +1,0 @@
-Flask
-mutagen
-google-api-python-client
